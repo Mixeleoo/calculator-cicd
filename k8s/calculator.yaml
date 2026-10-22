@@ -74,6 +74,7 @@ spec:
               path: /health
               port: 8080
             periodSeconds: 2
+            timeoutSeconds: 5
             failureThreshold: 2
           livenessProbe:
             httpGet:
@@ -81,6 +82,7 @@ spec:
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
+            timeoutSeconds: 5
             failureThreshold: 3
           env:
             - name: WORK_MS
