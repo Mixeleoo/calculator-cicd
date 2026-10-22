@@ -25,8 +25,22 @@ jobs:
             docker build --target test -t calc-$s-test services/$s
           done
 
-      # TODO 1: build one image per service.
-      # Tag every image with the first 7 characters of the commit SHA.
+      - name: Build
+        shell: bash
+        run: |
+          TAG=${GITHUB_SHA::7}
+          for s in $SERVICES; do
+            docker build -t calc-$s:$TAG services/$s
+          done
 
-      # TODO 2: deploy to the local cluster.
-      # Replace IMAGE_TAG in the manifests, apply them, then wait for every rollout.
+      - name: Deploy
+        shell: bash
+        run: |
+          TAG=${GITHUB_SHA::7}
+          kubectl config use-context docker-desktop
+          for f in k8s/*.yaml; do
+            sed "s/IMAGE_TAG/$TAG/g" "$f" | kubectl apply -f -
+          done
+          for s in $SERVICES; do
+            kubectl -n calculator rollout status deployment/$s --timeout=180s
+          done
