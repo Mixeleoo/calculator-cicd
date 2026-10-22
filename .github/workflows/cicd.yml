@@ -1,0 +1,32 @@
+name: calculator-cicd
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  build-test-deploy:
+    runs-on: self-hosted
+    env:
+      SERVICES: "calculator sum sub mul div"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        shell: bash
+        run: |
+          for s in $SERVICES; do
+            docker build --target test -t calc-$s-test services/$s
+          done
+
+      # TODO 1: build one image per service.
+      # Tag every image with the first 7 characters of the commit SHA.
+
+      # TODO 2: deploy to the local cluster.
+      # Replace IMAGE_TAG in the manifests, apply them, then wait for every rollout.

@@ -1,0 +1,206 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculator
+  namespace: calculator
+  labels:
+    app: calculator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calculator
+  template:
+    metadata:
+      labels:
+        app: calculator
+    spec:
+      containers:
+        - name: calculator
+          image: calc-calculator:IMAGE_TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WORK_MS
+              value: "0"
+            - name: TIMEOUT_MS
+              value: "2000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calculator-service
+  namespace: calculator
+spec:
+  type: NodePort
+  selector:
+    app: calculator
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sum
+  namespace: calculator
+  labels:
+    app: sum
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sum
+  template:
+    metadata:
+      labels:
+        app: sum
+    spec:
+      containers:
+        - name: sum
+          image: calc-sum:IMAGE_TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WORK_MS
+              value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sum-service
+  namespace: calculator
+spec:
+  type: NodePort
+  selector:
+    app: sum
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sub
+  namespace: calculator
+  labels:
+    app: sub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sub
+  template:
+    metadata:
+      labels:
+        app: sub
+    spec:
+      containers:
+        - name: sub
+          image: calc-sub:IMAGE_TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WORK_MS
+              value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sub-service
+  namespace: calculator
+spec:
+  type: NodePort
+  selector:
+    app: sub
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mul
+  namespace: calculator
+  labels:
+    app: mul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mul
+  template:
+    metadata:
+      labels:
+        app: mul
+    spec:
+      containers:
+        - name: mul
+          image: calc-mul:IMAGE_TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WORK_MS
+              value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mul-service
+  namespace: calculator
+spec:
+  type: NodePort
+  selector:
+    app: mul
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31003
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: div
+  namespace: calculator
+  labels:
+    app: div
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: div
+  template:
+    metadata:
+      labels:
+        app: div
+    spec:
+      containers:
+        - name: div
+          image: calc-div:IMAGE_TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WORK_MS
+              value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: div-service
+  namespace: calculator
+spec:
+  type: NodePort
+  selector:
+    app: div
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31004
