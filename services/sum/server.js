@@ -3,7 +3,7 @@ const http = require('http');
 const os = require('os');
 
 const NAME = 'sum';
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PORT = process.env.PORT || 8080;
 const WORK_MS = Number(process.env.WORK_MS || 0);   // CPU time burned per request
 const DELAY_MS = Number(process.env.DELAY_MS || 0); // extra waiting time per request
@@ -36,6 +36,7 @@ function send(res, code, text) {
 }
 
 function handler(req, res) {
+  console.log('[sum] v2 request received: ' + req.method + ' ' + req.url);
   const url = new URL(req.url, 'http://localhost');
   if (req.method === 'GET') {
     switch (url.pathname) {
