@@ -12,7 +12,7 @@ let sick = false;
 const hold = [];
 
 function compute(a, b) {
-  return a - b;
+  return a + b;
 }
 
 function burnCpu(ms) {
